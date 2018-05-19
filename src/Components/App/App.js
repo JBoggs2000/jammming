@@ -2,6 +2,7 @@ import React from 'react';
 import SearchBar from '../SearchBar/SearchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import Playlist from '../Playlist/Playlist';
+import Spotify from '../../Util/Spotify'
 
 import './App.css';
 
@@ -14,10 +15,11 @@ class App extends React.Component {
           id: "track2",
           name: "Defaulted Search",
           artist: "The Algorithms",
-          album: "Searching for a Use Case"
+          album: "Searching for a Use Case",
+          uri: "testingrur"
         }
       ],
-      playlistName: "Stringing together a List",
+      playlistName: "New Playlist",
       playlistTracks: [
         {
           id: "track1",
@@ -55,12 +57,24 @@ class App extends React.Component {
   savePlaylist() {
     let trackURIs = [];
     this.state.playlistTracks.map(track => {
-      trackURIs.push(track.id);
-      console.log(trackURIs);
+      trackURIs.push(track.uri);
+    });
+    //Remove the two fake tracks if they're in here...
+    this.removeTrack({id: "track1"});
+    this.removeTrack({id: "track2"});
+    //And down to business...
+    Spotify.getAccessToken();
+    Spotify.savePlaylist(this.state.playlistName, trackURIs);
+    this.setState({
+      playlistName: "New Playlist",
+      playlistTracks: []
     });
   }
   search(term) {
-    console.log(term);
+    Spotify.getAccessToken();
+    Spotify.search(term).then(tracks => {
+      this.setState({searchResults: tracks});
+    });
   }
   render() {
     return (

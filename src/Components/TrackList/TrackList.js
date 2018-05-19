@@ -4,9 +4,6 @@ import Track from '../Track/Track';
 import './TrackList.css';
 
 class TrackList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     return(
       <div className="TrackList">
