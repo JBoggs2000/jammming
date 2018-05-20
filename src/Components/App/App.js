@@ -27,13 +27,15 @@ class App extends React.Component {
           artist: "Null Terminator",
           album: "Incremental Additives"
         }
-      ]
+      ],
+      term: "sample"
     };
     this.addTrack = this.addTrack.bind(this);
     this.removeTrack = this.removeTrack.bind(this);
     this.updatePlaylistName = this.updatePlaylistName.bind(this);
     this.savePlaylist = this.savePlaylist.bind(this);
     this.search = this.search.bind(this);
+    Spotify.getAccessToken();
   }
   addTrack(track) {
     if (this.state.playlistTracks.find(savedTrack => savedTrack.id === track.id)) {
@@ -63,7 +65,6 @@ class App extends React.Component {
     this.removeTrack({id: "track1"});
     this.removeTrack({id: "track2"});
     //And down to business...
-    Spotify.getAccessToken();
     Spotify.savePlaylist(this.state.playlistName, trackURIs);
     this.setState({
       playlistName: "New Playlist",
@@ -78,7 +79,7 @@ class App extends React.Component {
   }
   render() {
     return (
-      <div>
+      <div onLoad={Spotify.getAccessToken}>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
         <div className="App">
           <SearchBar onSearch={this.search}/>

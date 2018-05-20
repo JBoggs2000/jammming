@@ -44,7 +44,7 @@ const Spotify = {
     });
   },
   savePlaylist(playlistName, trackURIs) {
-    if (!playlistName || !trackURIs) {
+    if (!playlistName || trackURIs.length === 0 || trackURIs[0] === undefined) {
       return;
     }
     let userID;
